@@ -1,25 +1,32 @@
 const { spawn } = require("child_process");
 
-function _term_msgs(object) {
-  object.stdout.on("data", (data) => {
-    console.log(data.toString());
-  });
-
-  object.stderr.on("data", (data) => {
-    console.error(data.toString());
-  });
-}
-
 function _delete_dist() {
   const _branch = spawn("git", ["branch", "-D", "dist"]);
 
-  _term_msgs(_branch);
+  _branch.stdout.on("data", (data) => {
+    console.log(data.toString());
+    /**
+     * after branch deletion of branch
+     * create a new branch
+     */
+    _initiate();
+  });
+
+  _branch.stderr.on("data", (data) => {
+    console.error(data.toString());
+  });
 }
 
 function _create_dist() {
   const _create = spawn("git", ["checkout", "-b", "dist"]);
 
-  _term_msgs(_create);
+  _create.stdout.on("data", (data) => {
+    console.log(data.toString());
+  });
+
+  _create.stderr.on("data", (data) => {
+    console.error(data.toString());
+  });
 }
 
 function _initiate() {
@@ -31,6 +38,7 @@ function _initiate() {
    * should push it to origin
    * should checkout to master and delete dist
    */
+  _create_dist();
 }
 
-module.exports = { _delete_dist };
+module.exports = { _delete_dist, _initiate };

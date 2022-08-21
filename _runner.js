@@ -1,4 +1,4 @@
-const { _delete_dist } = require("./_helpers.js");
+const { _delete_dist, _initiate } = require("./_helpers.js");
 
 const { spawn } = require("child_process");
 
@@ -19,7 +19,7 @@ if (_args[2] === "dist") {
     if (_is_match.length !== 0) {
       _delete_dist();
     } else {
-      console.log(data.toString());
+      _initiate();
     }
   });
 
