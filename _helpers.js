@@ -54,6 +54,9 @@ function _generate_dist() {
 
   _generate.stdout.on("data", (data) => {
     console.log(data.toString());
+    /**
+     * add changes
+     */
     _add_changes();
   });
 
@@ -67,6 +70,9 @@ function _add_changes() {
 
   _add.stdout.on("data", (data) => {
     console.log(data.toString());
+    /**
+     * commit changes
+     */
     _commit_changes();
   });
 
@@ -80,6 +86,9 @@ function _commit_changes() {
 
   _commit.stdout.on("data", (data) => {
     console.log(data.toString());
+    /**
+     * push to origin
+     */
     _push_origin();
   });
 
@@ -93,6 +102,9 @@ function _push_origin() {
 
   _push.stdout.on("data", (data) => {
     console.log(data.toString());
+    /**
+     * checkout to master
+     */
     _checkout_master();
   });
 
