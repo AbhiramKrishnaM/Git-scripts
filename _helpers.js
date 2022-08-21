@@ -1,127 +1,85 @@
 const { spawn } = require("child_process");
 
 function _delete_dist() {
-  const _branch = spawn("git", ["branch", "-D", "dist"]);
-
-  _branch.stdout.on("data", (data) => {
-    console.log(data.toString());
-    /**
-     * after branch deletion of branch
-     * create a new branch
-     */
-    _initiate();
+  const _branch = spawn("git branch -D dist", {
+    stdio: "inherit",
+    shell: true,
   });
-
-  _branch.stderr.on("data", (data) => {
-    console.error(data.toString());
-  });
+  _initiate();
 }
 
 function _create_dist() {
-  const _create = spawn("git", ["checkout", "-b", "dist"]);
-
-  _create.stdout.on("data", (data) => {
-    console.log(data.toString());
-    /**
-     * pull from origin master
-     */
-    _pull_origin();
+  const _create = spawn("git checkout -b dist", {
+    stdio: "inherit",
+    shell: true,
   });
-
-  _create.stderr.on("data", (data) => {
-    console.error(data.toString());
-  });
+  _pull_origin();
 }
 
 function _pull_origin() {
-  const _pull = spawn("git", ["pull", "origin", "master"]);
-
-  _pull.stdout.on("data", (data) => {
-    console.log(data.toString());
-    /**
-     * generate dist folder
-     */
-    _generate_dist();
+  const _pull = spawn("git pull origin master", {
+    stdio: "inherit",
+    shell: true,
   });
 
-  _pull.stderr.on("data", (data) => {
-    console.error(data.toString());
-  });
+  /**
+   * generate dist folder
+   */
+  _generate_dist();
 }
 
 function _generate_dist() {
-  const _generate = spawn("npm", ["run", "generate"]);
-
-  _generate.stdout.on("data", (data) => {
-    console.log(data.toString());
-    /**
-     * add changes
-     */
-    _add_changes();
+  const _generate = spawn("npm run generate", {
+    stdio: "inherit",
+    shell: true,
   });
 
-  _generate.stderr.on("data", (data) => {
-    console.error(data.toString());
-  });
+  /**
+   * add changes
+   */
+  _add_changes();
 }
 
 function _add_changes() {
-  const _add = spawn("git", ["add", "--all"]);
-
-  _add.stdout.on("data", (data) => {
-    console.log(data.toString());
-    /**
-     * commit changes
-     */
-    _commit_changes();
+  const _add = spawn("git add --all ", {
+    stdio: "inherit",
+    shell: true,
   });
 
-  _add.stderr.on("data", (data) => {
-    console.error(data.toString());
-  });
+  /**
+   * commit changes
+   */
+  _commit_changes();
 }
 
 function _commit_changes() {
-  const _commit = spawn("git", ["commit", "-m", "'feat: dist generated'"]);
-
-  _commit.stdout.on("data", (data) => {
-    console.log(data.toString());
-    /**
-     * push to origin
-     */
-    _push_origin();
+  const _commit = spawn("git commit -m 'feat: dist generated'", {
+    stdio: "inherit",
+    shell: true,
   });
 
-  _commit.stderr.on("data", (data) => {
-    console.error(data.toString());
-  });
+  /**
+   * push to origin
+   */
+  _push_origin();
 }
 
 function _push_origin() {
-  const _push = spawn("git", ["push", "origin", "dist"]);
-
-  _push.stdout.on("data", (data) => {
-    console.log(data.toString());
-    /**
-     * checkout to master
-     */
-    _checkout_master();
+  const _push = spawn("git push origin dist", {
+    stdio: "inherit",
+    shell: true,
   });
 
-  _push.stderr.on("data", (data) => {
-    console.error(data.toString());
-  });
+  /**
+   * checkout to master
+   */
+  _checkout_master();
 }
 
 function _checkout_master() {
-  const _checkout = spawn("git", ["checkout", "master"]);
-
-  _checkout.stdout.on("data", (data) => {
-    console.log(data.toString());
-  });
-
-  _checkout.stderr.on("data", (data) => {
-    console.error(data.toString());
+  const _checkout = spawn("git checkout master", {
+    stdio: "inherit",
+    shell: true,
   });
 }
 
