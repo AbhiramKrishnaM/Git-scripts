@@ -1,86 +1,121 @@
-const { spawn } = require("child_process");
+const { exec } = require('child_process')
 
 function _delete_dist() {
-  const _branch = spawn("git branch -D dist", {
-    stdio: "inherit",
-    shell: true,
-  });
-  _initiate();
+  exec('git branch -D dist', (err, stdout, stderr) => {
+    if (err) {
+      console.error(`exec error: ${err}`)
+      return
+    }
+
+    console.log(stdout)
+
+    _initiate()
+  })
 }
 
 function _create_dist() {
-  const _create = spawn("git checkout -b dist", {
-    stdio: "inherit",
-    shell: true,
-  });
-  _pull_origin();
+  exec('git checkout -b dist', (err, stdout, stderr) => {
+    if (err) {
+      console.error(`exec error: ${err}`)
+      return
+    }
+
+    console.log(stdout)
+
+    /**
+     * pull from origin
+     */
+
+    _pull_origin()
+  })
 }
 
 function _pull_origin() {
-  const _pull = spawn("git pull origin master", {
-    stdio: "inherit",
-    shell: true,
-  });
+  exec('git pull origin master', (err, stdout, stderr) => {
+    if (err) {
+      console.error(`exec error: ${err}`)
+      return
+    }
+    console.log(stdout)
 
-  /**
-   * generate dist folder
-   */
-  _generate_dist();
+    /**
+     * generate dist folder
+     */
+    _generate_dist()
+  })
 }
 
 function _generate_dist() {
-  const _generate = spawn("npm run generate", {
-    stdio: "inherit",
-    shell: true,
-  });
+  exec('npm run generate', (err, stdout, stderr) => {
+    if (err) {
+      console.error(`exec error: ${err}`)
+      return
+    }
 
-  /**
-   * add changes
-   */
-  _add_changes();
+    console.log(stdout)
+
+    /**
+     * add changes
+     */
+    _add_changes()
+  })
 }
 
 function _add_changes() {
-  const _add = spawn("git add --all ", {
-    stdio: "inherit",
-    shell: true,
-  });
+  exec('git add --all', (err, stdout, stderr) => {
+    if (err) {
+      console.error(`exec error: ${err}`)
+      return
+    }
 
-  /**
-   * commit changes
-   */
-  _commit_changes();
+    console.log(stdout)
+    /**
+     * commit changes
+     */
+    _commit_changes()
+  })
 }
 
 function _commit_changes() {
-  const _commit = spawn("git commit -m 'feat: dist generated'", {
-    stdio: "inherit",
-    shell: true,
-  });
+  exec(`git commit -m "feat: dist generated"`, (err, stdout, stderr) => {
+    if (err) {
+      console.error(`exec error: ${err}`)
+      return
+    }
+    console.log(stdout)
 
-  /**
-   * push to origin
-   */
-  _push_origin();
+    /**
+     * push to origin
+     */
+    _push_origin()
+  })
 }
 
 function _push_origin() {
-  const _push = spawn("git push origin dist", {
-    stdio: "inherit",
-    shell: true,
-  });
+  exec('git push origin dist', (err, stdout, stderr) => {
+    if (err) {
+      console.error(`exec error: ${err}`)
+      return
+    }
 
-  /**
-   * checkout to master
-   */
-  _checkout_master();
+    console.log(stdout)
+
+    /**
+     * checkout to master
+     */
+    _checkout_master()
+  })
 }
 
 function _checkout_master() {
-  const _checkout = spawn("git checkout master", {
-    stdio: "inherit",
-    shell: true,
-  });
+  exec('git checkout master', (err, stdout, stderr) => {
+    if (err) {
+      console.error(`exec error: ${err}`)
+      return
+    }
+
+    console.log(stdout)
+  })
 }
 
 function _initiate() {
@@ -92,7 +127,7 @@ function _initiate() {
    * should push it to origin
    * should checkout to master
    */
-  _create_dist();
+  _create_dist()
 }
 
-module.exports = { _delete_dist, _initiate };
+module.exports = { _delete_dist, _initiate }
