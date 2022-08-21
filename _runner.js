@@ -10,20 +10,17 @@ if (_args[2] === "dist") {
   _check_dist.stdout.on("data", (data) => {
     const _buffer_string_array = data.toString().split(" ");
 
-    const _is_match =
-      _buffer_string_array.filter((item) => item === "dist\n").length !== 0;
+    const _regular_expr = /dist\b/;
 
-    if (_is_match) {
+    const _is_match = _buffer_string_array.filter((item) =>
+      _regular_expr.exec(item)
+    );
+
+    if (_is_match.length !== 0) {
       _delete_dist();
     } else {
       console.log(data.toString());
     }
-  });
-
-  _check_dist.on("exit", function (code, signal) {
-    console.log(
-      "child process exited with " + `code ${code} and signal ${signal}`
-    );
   });
 
   _check_dist.stderr.on("data", (data) => {

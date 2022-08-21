@@ -1,17 +1,36 @@
 const { spawn } = require("child_process");
 
-function _delete_dist() {
-  const _delete_branch = spawn("git", ["branch", "-D", "dist"]);
-
-  _delete_branch.stdout.on("data", (data) => {
+function _term_msgs(object) {
+  object.stdout.on("data", (data) => {
     console.log(data.toString());
   });
 
-  _delete_branch.stderr.on("data", (data) => {
+  object.stderr.on("data", (data) => {
     console.error(data.toString());
   });
+}
 
-  return true;
+function _delete_dist() {
+  const _branch = spawn("git", ["branch", "-D", "dist"]);
+
+  _term_msgs(_branch);
+}
+
+function _create_dist() {
+  const _create = spawn("git", ["checkout", "-b", "dist"]);
+
+  _term_msgs(_create);
+}
+
+function _initiate() {
+  /**
+   * should  create a new branch called dist  and checkout
+   * should  pull from origin
+   * should generate dist
+   * should add and commit
+   * should push it to origin
+   * should checkout to master and delete dist
+   */
 }
 
 module.exports = { _delete_dist };
